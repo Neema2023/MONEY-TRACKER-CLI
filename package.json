@@ -1,20 +1,27 @@
 {
-  "name": "money-tracker-cli",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Neema2023/MONEY-TRACKER-CLI.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Neema2023/MONEY-TRACKER-CLI/issues"
-  },
-  "homepage": "https://github.com/Neema2023/MONEY-TRACKER-CLI#readme"
+    "name": "money-tracker-cli",
+    "version": "1.0.0",
+    "description": "A command-line tool for tracking income, expenses, budgets, and currency rates",
+    "type": "module",
+    "main": "index.js",
+    "bin": {
+        "money-tracker": "./index.js"
+    },
+    "scripts": {
+        "start": "node index.js",
+        "test": "node --test"
+    },
+    "keywords": [
+        "money",
+        "tracker",
+        "cli",
+        "budget"
+    ],
+    "author": "Money Tracker Team",
+    "license": "ISC",
+    "dependencies": {
+        "chalk": "^6.0.1",
+        "cli-table3": "^0.6.5",
+        "ora": "^10.0.0"
+    }
 }

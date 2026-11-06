@@ -18,13 +18,14 @@ export async function main() {
             args: process.argv.slice(2),
 
             options: {
-                amount: {
-                    type: "string"
+                help: {
+                    type: "boolean",
+                    short: "h"
                 },
                 category: {
                     type: "string"
                 },
-                note: {
+                limit: {
                     type: "string"
                 },
                 limit: {
@@ -102,6 +103,7 @@ export async function main() {
 // Display help instructions
 function showHelp() {
     console.log(`
+MONEY TRACKER CLI
 
 MONEY TRACKER CLI
 
@@ -113,14 +115,17 @@ COMMANDS:
   add-income
       Add money received.
 
-  add-expense
-      Record money spent.
+  add-income       Add an income transaction
+  add-expense      Add an expense transaction
+  list             Display all transactions
+  balance          Display financial summary
 
-  list
-      Display all transactions.
+  budget           Set a category budget
+  report           Generate a financial report
+  delete           Delete a transaction
+  convert          Convert between currencies
 
-  balance
-      Calculate your current balance.
+Options:
 
   budget
       Set or update a category budget.
@@ -154,8 +159,9 @@ EXAMPLES:
 
   money-tracker add-expense --amount 20000 --category Food
 
+  money-tracker add-income
+  money-tracker add-expense
   money-tracker list
-
   money-tracker balance
 
   money-tracker budget --category Food --limit 50000

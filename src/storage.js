@@ -1,51 +1,103 @@
-import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 
-// Get the project directory
-const __filename = fileURLToPath(
-    import.meta.url);
-const __dirname = path.dirname(__filename);
+import fs from "node:fs";
 
 // JSON database location
-const DATA_FILE = path.join(__dirname, "../transactions.json");
+const DATA_FILE = "./transactions.json";
 
-// Initialize JSON database
+// Create the JSON file if it does not exist
 export function initializeStorage() {
     if (!fs.existsSync(DATA_FILE)) {
-        fs.writeFileSync(DATA_FILE, JSON.stringify([], null, 2));
+        const data = {
+            transactions: [],
+            budgets: []
+        };
+
+        fs.writeFileSync(
+            DATA_FILE,
+            JSON.stringify(data, null, 2)
+        );
     }
 }
 
-// Read transactions from JSON
-export function readTransactions() {
+// Read all data from the JSON file
+
+export function readData() {
     initializeStorage();
 
-    try {
-        const data = fs.readFileSync(DATA_FILE, "utf-8");
-        const transactions = JSON.parse(data);
+    const fileData = fs.readFileSync(DATA_FILE, "utf-8");
+    let data = JSON.parse(fileData);
 
-        if (!Array.isArray(transactions)) {
-            throw new Error("Invalid transaction data.");
-        }
+    // Check if the file contains the old format
+    if (Array.isArray(data)) {
 
-        return transactions;
-    } catch (error) {
-        throw new Error(`Storage error: ${error.message}`);
+        const updatedData = {
+            transactions: data,
+            budgets: []
+        };
+
+        saveData(updatedData);
+
+        return updatedData;
     }
+
+    // Check if the data has the correct structure
+    if (
+        !data ||
+        !Array.isArray(data.transactions) ||
+        !Array.isArray(data.budgets)
+    ) {
+        throw new Error("Invalid data in JSON file.");
+    }
+
+    return data;
 }
 
-// Save transactions to JSON
-export function saveTransactions(transactions) {
-    if (!Array.isArray(transactions)) {
-        throw new Error("Transactions must be an array.");
-    }
 
-    initializeStorage();
+// Save all data to the JSON file
+export function saveData(data) {
+    if (
+        !data ||
+        !Array.isArray(data.transactions) ||
+        !Array.isArray(data.budgets)
+    ) {
+        throw new Error("Invalid data structure.");
+    }
 
     fs.writeFileSync(
         DATA_FILE,
-        JSON.stringify(transactions, null, 2),
+        JSON.stringify(data, null, 2),
         "utf-8"
     );
+}
+
+// Get all transactions
+export function readTransactions() {
+    const data = readData();
+
+    return data.transactions;
+}
+
+// Save transactions without deleting budgets
+export function saveTransactions(transactions) {
+    const data = readData();
+
+    data.transactions = transactions;
+
+    saveData(data);
+}
+
+// Get all budgets
+export function readBudgets() {
+    const data = readData();
+
+    return data.budgets;
+}
+
+// Save budgets without deleting transactions
+export function saveBudgets(budgets) {
+    const data = readData();
+
+    data.budgets = budgets;
+
+    saveData(data);
 }

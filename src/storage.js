@@ -2,50 +2,72 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-// Get the project directory
 const __filename = fileURLToPath(
     import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// JSON database location
 const DATA_FILE = path.join(__dirname, "../transactions.json");
 
-// Initialize JSON database
 export function initializeStorage() {
     if (!fs.existsSync(DATA_FILE)) {
-        fs.writeFileSync(DATA_FILE, JSON.stringify([], null, 2));
+        const initialData = {
+            transactions: [],
+            budgets: []
+        };
+
+        fs.writeFileSync(DATA_FILE, JSON.stringify(initialData, null, 2));
     }
 }
 
-// Read transactions from JSON
-export function readTransactions() {
+export function readData() {
     initializeStorage();
 
     try {
         const data = fs.readFileSync(DATA_FILE, "utf-8");
-        const transactions = JSON.parse(data);
+        const parsedData = JSON.parse(data);
 
-        if (!Array.isArray(transactions)) {
-            throw new Error("Invalid transaction data.");
+        if (!parsedData ||
+            !Array.isArray(parsedData.transactions) ||
+            !Array.isArray(parsedData.budgets)
+        ) {
+            throw new Error("Invalid data structure.");
         }
 
-        return transactions;
+        return parsedData;
     } catch (error) {
         throw new Error(`Storage error: ${error.message}`);
     }
 }
 
-// Save transactions to JSON
-export function saveTransactions(transactions) {
-    if (!Array.isArray(transactions)) {
-        throw new Error("Transactions must be an array.");
+export function saveData(data) {
+    if (!data ||
+        !Array.isArray(data.transactions) ||
+        !Array.isArray(data.budgets)
+    ) {
+        throw new Error("Invalid data structure.");
     }
 
-    initializeStorage();
+    fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), "utf-8");
+}
 
-    fs.writeFileSync(
-        DATA_FILE,
-        JSON.stringify(transactions, null, 2),
-        "utf-8"
-    );
+// Transaction helper functions
+export function readTransactions() {
+    return readData().transactions;
+}
+
+export function saveTransactions(transactions) {
+    const data = readData();
+    data.transactions = transactions;
+    saveData(data);
+}
+
+// Budget helper functions
+export function readBudgets() {
+    return readData().budgets;
+}
+
+export function saveBudgets(budgets) {
+    const data = readData();
+    data.budgets = budgets;
+    saveData(data);
 }

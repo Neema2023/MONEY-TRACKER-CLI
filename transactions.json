@@ -47,7 +47,28 @@
       "category": "market",
       "note": "sales",
       "date": "2026-11-06"
+    },
+    {
+      "id": "73e0a8cd-6805-4b61-aa73-a25c8dd5de2a",
+      "type": "income",
+      "amount": 49000,
+      "category": "salary",
+      "note": "salary as a teacher",
+      "date": "2026-11-06"
+    },
+    {
+      "id": "6806cd35-d99e-4767-822c-e2c86d4ad561",
+      "type": "expense",
+      "amount": 20000,
+      "category": "food",
+      "note": "order food",
+      "date": "2026-11-06"
     }
   ],
-  "budgets": []
+  "budgets": [
+    {
+      "category": "Food",
+      "limit": 50000
+    }
+  ]
 }

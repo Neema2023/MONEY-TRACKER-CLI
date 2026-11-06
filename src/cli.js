@@ -153,26 +153,42 @@ OPTIONS:
   --to           Report end date (YYYY-MM-DD)
   -h, --help     Display help
 
+
 EXAMPLES:
 
-  money-tracker add-income --amount 500000 --category Salary
+  1. Add income:
+     node src/cli.js add-income
 
-  money-tracker add-expense --amount 20000 --category Food
+  2. Add expense:
+     node src/cli.js add-expense
 
-  money-tracker add-income
-  money-tracker add-expense
-  money-tracker list
-  money-tracker balance
+  3. List all transactions:
+     node src/cli.js list
 
-  money-tracker budget --category Food --limit 50000
+  4. Check financial balance:
+     node src/cli.js balance
 
-  money-tracker report --month 2026-11
+  5. Set a category budget:
+     node src/cli.js budget --category Food --limit 50000
 
-  money-tracker report --from 2026-11-01 --to 2026-11-30
+  6. Update an existing budget:
+     node src/cli.js budget --category Food --limit 30000
 
-  money-tracker delete
+  7. Generate a monthly report:
+     node src/cli.js report --month 2026-11
 
-  money-tracker convert
+  8. Generate a date-range report:
+     node src/cli.js report --from 2026-11-01 --to 2026-11-30
+
+  9. Delete a transaction:
+     node src/cli.js delete
+
+  10. Convert currency:
+      node src/cli.js convert
+
+  11. Display help:
+      node src/cli.js --help
+
 
 `);
 }

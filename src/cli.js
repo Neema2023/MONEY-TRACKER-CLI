@@ -1,3 +1,4 @@
+
 import { parseArgs } from "node:util";
 
 import {
@@ -27,6 +28,9 @@ export async function main() {
                 limit: {
                     type: "string"
                 },
+                limit: {
+                    type: "string"
+                },
                 month: {
                     type: "string"
                 },
@@ -35,6 +39,10 @@ export async function main() {
                 },
                 to: {
                     type: "string"
+                },
+                help: {
+                    type: "boolean",
+                    short: "h"
                 }
             },
 
@@ -51,11 +59,11 @@ export async function main() {
 
         switch (command) {
             case "add-income":
-                await addTransaction("income");
+                await addTransaction("income", values);
                 break;
 
             case "add-expense":
-                await addTransaction("expense");
+                await addTransaction("expense", values);
                 break;
 
             case "list":
@@ -92,11 +100,20 @@ export async function main() {
     }
 }
 
+// Display help instructions
 function showHelp() {
     console.log(`
 MONEY TRACKER CLI
 
-Commands:
+MONEY TRACKER CLI
+
+USAGE:
+  money-tracker <command> [options]
+
+COMMANDS:
+
+  add-income
+      Add money received.
 
   add-income       Add an income transaction
   add-expense      Add an expense transaction
@@ -110,23 +127,55 @@ Commands:
 
 Options:
 
-  --category       Specify a budget category
-  --limit           Specify a budget limit
-  --month           Generate a report for a month (YYYY-MM)
-  --from            Start date for a report
-  --to              End date for a report
-  --help, -h        Display help
+  budget
+      Set or update a category budget.
 
-Examples:
+  report
+      Generate monthly or date-range financial reports.
+
+  delete
+      Delete a transaction after confirmation.
+
+  convert
+      Convert an amount between currencies.
+
+  help
+      Display help instructions.
+
+OPTIONS:
+
+  --amount       Transaction amount
+  --category     Transaction category
+  --note         Optional description
+  --limit        Budget limit
+  --month        Report month (YYYY-MM)
+  --from         Report start date (YYYY-MM-DD)
+  --to           Report end date (YYYY-MM-DD)
+  -h, --help     Display help
+
+EXAMPLES:
+
+  money-tracker add-income --amount 500000 --category Salary
+
+  money-tracker add-expense --amount 20000 --category Food
 
   money-tracker add-income
   money-tracker add-expense
   money-tracker list
   money-tracker balance
-  money-tracker budget --category Food --limit 100000
+
+  money-tracker budget --category Food --limit 50000
+
   money-tracker report --month 2026-11
+
   money-tracker report --from 2026-11-01 --to 2026-11-30
+
   money-tracker delete
+
   money-tracker convert
+
 `);
 }
+
+
+main();

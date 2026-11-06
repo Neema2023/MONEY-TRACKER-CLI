@@ -1,42 +1,53 @@
-[
-  {
-    "id": "15000f6a-d8b3-4bf3-b2c3-37700fb1f00f",
-    "type": "income",
-    "amount": 500000,
-    "category": "Salary",
-    "note": "",
-    "date": "2026-11-05"
-  },
-  {
-    "id": "26f33d89-ecaa-4db5-8e00-27bcff6f20a8",
-    "type": "expense",
-    "amount": 400,
-    "category": "saving",
-    "note": "we need to save this",
-    "date": "2026-11-05"
-  },
-  {
-    "id": "41680481-c168-4c21-95a9-9e701e4cbbc5",
-    "type": "expense",
-    "amount": 40,
-    "category": "income",
-    "note": "hello neema",
-    "date": "2026-11-05"
-  },
-  {
-    "id": "641287e5-6355-416e-8571-3f71d173dd1f",
-    "type": "expense",
-    "amount": 700,
-    "category": "expense",
-    "note": "paying tax",
-    "date": "2026-11-05"
-  },
-  {
-    "id": "8bb75f7b-4ff7-4d99-9626-c9795a89c370",
-    "type": "income",
-    "amount": 1000,
-    "category": "dhhd",
-    "note": "hdjss",
-    "date": "2026-11-05"
-  }
-]
+{
+  "transactions": [
+    {
+      "id": "15000f6a-d8b3-4bf3-b2c3-37700fb1f00f",
+      "type": "income",
+      "amount": 500000,
+      "category": "Salary",
+      "note": "",
+      "date": "2026-11-05"
+    },
+    {
+      "id": "26f33d89-ecaa-4db5-8e00-27bcff6f20a8",
+      "type": "expense",
+      "amount": 400,
+      "category": "saving",
+      "note": "we need to save this",
+      "date": "2026-11-05"
+    },
+    {
+      "id": "41680481-c168-4c21-95a9-9e701e4cbbc5",
+      "type": "expense",
+      "amount": 40,
+      "category": "income",
+      "note": "hello neema",
+      "date": "2026-11-05"
+    },
+    {
+      "id": "641287e5-6355-416e-8571-3f71d173dd1f",
+      "type": "expense",
+      "amount": 700,
+      "category": "expense",
+      "note": "paying tax",
+      "date": "2026-11-05"
+    },
+    {
+      "id": "8bb75f7b-4ff7-4d99-9626-c9795a89c370",
+      "type": "income",
+      "amount": 1000,
+      "category": "dhhd",
+      "note": "hdjss",
+      "date": "2026-11-05"
+    },
+    {
+      "id": "6cc9711d-7af5-4164-b6bb-d11742e62c42",
+      "type": "income",
+      "amount": 50000,
+      "category": "market",
+      "note": "sales",
+      "date": "2026-11-06"
+    }
+  ],
+  "budgets": []
+}

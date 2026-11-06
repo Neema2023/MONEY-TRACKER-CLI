@@ -1,73 +1,103 @@
+
 import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 
-const __filename = fileURLToPath(
-    import.meta.url);
-const __dirname = path.dirname(__filename);
+// JSON database location
+const DATA_FILE = "./transactions.json";
 
-const DATA_FILE = path.join(__dirname, "../transactions.json");
-
+// Create the JSON file if it does not exist
 export function initializeStorage() {
     if (!fs.existsSync(DATA_FILE)) {
-        const initialData = {
+        const data = {
             transactions: [],
             budgets: []
         };
 
-        fs.writeFileSync(DATA_FILE, JSON.stringify(initialData, null, 2));
+        fs.writeFileSync(
+            DATA_FILE,
+            JSON.stringify(data, null, 2)
+        );
     }
 }
+
+// Read all data from the JSON file
 
 export function readData() {
     initializeStorage();
 
-    try {
-        const data = fs.readFileSync(DATA_FILE, "utf-8");
-        const parsedData = JSON.parse(data);
+    const fileData = fs.readFileSync(DATA_FILE, "utf-8");
+    let data = JSON.parse(fileData);
 
-        if (!parsedData ||
-            !Array.isArray(parsedData.transactions) ||
-            !Array.isArray(parsedData.budgets)
-        ) {
-            throw new Error("Invalid data structure.");
-        }
+    // Check if the file contains the old format
+    if (Array.isArray(data)) {
 
-        return parsedData;
-    } catch (error) {
-        throw new Error(`Storage error: ${error.message}`);
+        const updatedData = {
+            transactions: data,
+            budgets: []
+        };
+
+        saveData(updatedData);
+
+        return updatedData;
     }
+
+    // Check if the data has the correct structure
+    if (
+        !data ||
+        !Array.isArray(data.transactions) ||
+        !Array.isArray(data.budgets)
+    ) {
+        throw new Error("Invalid data in JSON file.");
+    }
+
+    return data;
 }
 
+
+// Save all data to the JSON file
 export function saveData(data) {
-    if (!data ||
+    if (
+        !data ||
         !Array.isArray(data.transactions) ||
         !Array.isArray(data.budgets)
     ) {
         throw new Error("Invalid data structure.");
     }
 
-    fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), "utf-8");
+    fs.writeFileSync(
+        DATA_FILE,
+        JSON.stringify(data, null, 2),
+        "utf-8"
+    );
 }
 
-// Transaction helper functions
+// Get all transactions
 export function readTransactions() {
-    return readData().transactions;
+    const data = readData();
+
+    return data.transactions;
 }
 
+// Save transactions without deleting budgets
 export function saveTransactions(transactions) {
     const data = readData();
+
     data.transactions = transactions;
+
     saveData(data);
 }
 
-// Budget helper functions
+// Get all budgets
 export function readBudgets() {
-    return readData().budgets;
+    const data = readData();
+
+    return data.budgets;
 }
 
+// Save budgets without deleting transactions
 export function saveBudgets(budgets) {
     const data = readData();
+
     data.budgets = budgets;
+
     saveData(data);
 }

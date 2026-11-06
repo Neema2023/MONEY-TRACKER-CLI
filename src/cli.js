@@ -6,25 +6,35 @@ import {
 } from "./transactions.js";
 
 import { showBalance } from "./balance.js";
+import { setBudget } from "./budget.js";
+import { generateReport } from "./report.js";
+import { deleteTransaction } from "./delete.js";
+import { convertCurrency } from "./api.js";
 
-export function main() {
+export async function main() {
     try {
         const { values, positionals } = parseArgs({
             args: process.argv.slice(2),
 
             options: {
-                amount: {
-                    type: "string"
+                help: {
+                    type: "boolean",
+                    short: "h"
                 },
                 category: {
                     type: "string"
                 },
-                note: {
+                limit: {
                     type: "string"
                 },
-                help: {
-                    type: "boolean",
-                    short: "h"
+                month: {
+                    type: "string"
+                },
+                from: {
+                    type: "string"
+                },
+                to: {
+                    type: "string"
                 }
             },
 
@@ -41,11 +51,11 @@ export function main() {
 
         switch (command) {
             case "add-income":
-                addTransaction("income", values);
+                await addTransaction("income");
                 break;
 
             case "add-expense":
-                addTransaction("expense", values);
+                await addTransaction("expense");
                 break;
 
             case "list":
@@ -54,6 +64,22 @@ export function main() {
 
             case "balance":
                 showBalance();
+                break;
+
+            case "budget":
+                setBudget(values);
+                break;
+
+            case "report":
+                generateReport(values.month, values.from, values.to);
+                break;
+
+            case "delete":
+                await deleteTransaction();
+                break;
+
+            case "convert":
+                await convertCurrency();
                 break;
 
             default:
@@ -66,50 +92,41 @@ export function main() {
     }
 }
 
-// Help instructions
 function showHelp() {
     console.log(`
+MONEY TRACKER CLI
 
-      // MONEY TRACKER CLI
+Commands:
 
+  add-income       Add an income transaction
+  add-expense      Add an expense transaction
+  list             Display all transactions
+  balance          Display financial summary
 
-USAGE:
-  money-tracker <command> [options]
+  budget           Set a category budget
+  report           Generate a financial report
+  delete           Delete a transaction
+  convert          Convert between currencies
 
-COMMANDS:
+Options:
 
-  add-income
-      Add money received.
+  --category       Specify a budget category
+  --limit           Specify a budget limit
+  --month           Generate a report for a month (YYYY-MM)
+  --from            Start date for a report
+  --to              End date for a report
+  --help, -h        Display help
 
-  add-expense
-      Record money spent.
+Examples:
 
-  list
-      Display all transactions.
-
-  balance
-      Calculate your current balance.
-
-  help
-      Display help instructions.
-
-OPTIONS:
-
-  --amount       Transaction amount
-  --category     Transaction category
-  --note         Optional description
-  -h, --help     Display help
-
-EXAMPLES:
-
-  money-tracker add-income --amount 500000 --category Salary
-
-  money-tracker add-expense --amount 20000 --category Food
-
+  money-tracker add-income
+  money-tracker add-expense
   money-tracker list
-
   money-tracker balance
-
-
-  `);
+  money-tracker budget --category Food --limit 100000
+  money-tracker report --month 2026-11
+  money-tracker report --from 2026-11-01 --to 2026-11-30
+  money-tracker delete
+  money-tracker convert
+`);
 }
